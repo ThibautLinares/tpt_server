@@ -1,1 +1,3 @@
-# tpt_server
+# LiFi_server
+
+a [Sails](http://sailsjs.org) application
