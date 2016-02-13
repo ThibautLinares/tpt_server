@@ -1,5 +1,30 @@
 <div class="container">
     <div class="jumbotron">
-        <h1 align="center">Musée Internationnal de la Parfurmerie</h1>
+        	<h1 align="center">Musée Internationnal de la Parfurmerie</h1>
+        <br>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 text-center">
+
+			      <form ng-submit="process()" class="navbar-form navbar-left" ng-show="!isAuthenticated">
+			        <div class="form-group">
+			            <div class="form-group col-xs-12" >
+			                <label class="control-label col-xs-12 col-sm-3" for="email">Email</label>
+			                <div class="col-xs-12 col-sm-9">
+			           			<input type="text" class="form-control" id="email" name="email" ng-model="user.email" placeholder="Email" />
+			                </div>
+			            </div>
+			            <div class="form-group col-xs-12" >
+			                <label class="control-label col-xs-12 col-sm-3" for="password">Mot de passe</label>
+			                <div class="col-xs-12 col-sm-9">
+			            		<input type="password" class="form-control" id="password" name="password" ng-model="user.password" placeholder="Mot de passe"/>
+			                </div>
+			            </div>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-9"> 
+			            	<button type="submit" class="btn btn-primary btn-lg">Se connecter</button>
+			            </div>
+			        </div>
+			    </form>
+			</div>
+		</div>
     </div>
 </div>

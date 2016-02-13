@@ -1,61 +1,25 @@
 <div class="container">
-    <div class="jumbotron">
-        <h1 align="center">Oeuvre</h1>
-        <br>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 text-center">
-                <form name="oeuvreForm" ng-submit="addOeuvre()">
-                    <div class="form-group">
-
-                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.nom.$valid && oeuvreForm.nom.$dirty, 'has-error': oeuvreForm.nom.$invalid && oeuvreForm.nom.$dirty}">
-                            <label class="control-label col-xs-12 col-sm-3" for="nom">Nom</label>
-                            <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="nom" name="nom" ng-model="oeuvre.nom" placeholder="Nom" ng-minlength="3" required />
-                                <span ng-show="oeuvreForm.nom.$dirty" ng-messages="oeuvreForm.nom.$error">
-                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
-                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.description.$valid && oeuvreForm.description.$dirty, 'has-error': oeuvreForm.description.$invalid && oeuvreForm.description.$dirty}">
-                            <label class="control-label col-xs-12 col-sm-3" for="description">Description</label>
-                            <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="description" name="description" ng-model="oeuvre.description" placeholder="Description" ng-minlength="3" required />
-                                <span ng-show="oeuvreForm.description.$dirty" ng-messages="oeuvreForm.description.$error">
-                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
-                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.epoque.$valid && oeuvreForm.epoque.$dirty, 'has-error': oeuvreForm.epoque.$invalid && oeuvreForm.epoque.$dirty}">
-                            <label class="control-label col-xs-12 col-sm-3" for="epoque">Epoque</label>
-                            <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="epoque" name="epoque" ng-model="oeuvre.epoque" placeholder="Epoque" ng-minlength="3" required />
-                                <span ng-show="oeuvreForm.epoque.$dirty" ng-messages="oeuvreForm.epoque.$error">
-                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
-                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-offset-3 col-sm-9"> 
-                        <button type="submit" class="btn btn-primary btn-lg">Ajouter</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <div id="todo-list" class="row">
         <div class="col-sm-4 col-sm-offset-4">
-            <div class="checkbox" ng-repeat="todo in todos">
-                <label>
-                    <input type="checkbox" ng-click="removeOeuvre(todo)">
-                    {{ todo.id }}
-                    {{ todo.nom }}
-                    {{ todo.description }}
-                    {{ todo.epoque }}
-                </label>
-            </div>
+            <button class="btn btn-lg" ui-sref="oeuvreForm">Ajouter une oeuvre</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-xs-3 col-md-2">Nom</th>
+                        <th class="col-xs-3 col-md-1">Description</th>
+                        <th class="col-xs-4 col-md-3">Epoque</th>
+                        <th class="col-xs-4 col-md-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="oeuvre in oeuvres | filter:search | orderBy:sort:reverse">
+                        <td>{{oeuvre.nom}}</td>
+                        <td>{{oeuvre.description}}</td>
+                        <td>{{oeuvre.epoque}}</td>
+                        <td><button class="btn btn-danger" ng-click="removeOeuvre(oeuvre)"><span class="glyphicon glyphicon-trash"></span></button><a class="btn btn-primary" ui-sref="oeuvreForm({id: oeuvre.id})"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

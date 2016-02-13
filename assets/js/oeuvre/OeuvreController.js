@@ -1,27 +1,34 @@
 'use strict';
 
-angular.module('mip').controller('OeuvreCtrl', function($rootScope,$scope,OeuvreService){
+angular.module('mip').controller('OeuvreCtrl', function($rootScope,$scope,OeuvreService,$state,$stateParams){
 
-  $scope.reload_data = function () {
-    OeuvreService.getOeuvres().then(function(response) {
-      $scope.todos = response;
+  if($scope.isAuthenticated == false) {
+    $state.go('home');
+  }
+  $scope.oeuvre = {};
+
+  $scope.update = false;
+
+  if($stateParams.id) {
+    $scope.oeuvre.id = $stateParams.id;
+    OeuvreService.getOeuvre($scope.oeuvre).then(function(response) {
+      $scope.oeuvre = response;
+      console.log($scope.oeuvre);
     });
+    $scope.update = true;
   }
 
-  $scope.reload_data();
-  
   $scope.addOeuvre = function() {
     OeuvreService.addOeuvre($scope.oeuvre).then(function(response) {
-      $scope.reload_data();
-      $scope.oeuvre = {};
-      $scope.oeuvreForm.$setPristine();
+      $state.go('oeuvre');
     });
   }
 
-  $scope.removeOeuvre = function(oeuvre) {
-    OeuvreService.removeOeuvre(oeuvre).then(function(response) {
-      $scope.reload_data();
+  $scope.updateOeuvre = function() {
+    OeuvreService.updateOeuvre($scope.oeuvre).then(function(response) {
+      $state.go('oeuvre');
     });
   }
+
 
 });

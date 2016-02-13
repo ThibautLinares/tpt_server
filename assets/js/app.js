@@ -21,9 +21,15 @@ angular.module('mip',[
     })
     .state('oeuvre', {
       parent: 'main',
-      url: '/oeuvre',
-      controller: 'OeuvreCtrl',
+      url: '/oeuvres',
+      controller: 'OeuvreListCtrl',
       templateUrl : '/templates/oeuvre/view.html'
+    })
+    .state('oeuvreForm', {
+      parent: 'main',
+      url: '/oeuvre/:id',
+      controller: 'OeuvreCtrl',
+      templateUrl : '/templates/oeuvre/form.html'
     })
     .state('user', {
       parent: 'main',

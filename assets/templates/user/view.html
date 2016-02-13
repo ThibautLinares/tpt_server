@@ -6,20 +6,10 @@
             <div class="col-sm-8 col-sm-offset-2 text-center">
                 <form name="userForm" ng-submit="addTodo()">
                     <div class="form-group">
-                        <div class="form-group col-xs-12" ng-class="{'has-success': userForm.prenom.$valid && userForm.prenom.$dirty, 'has-error': userForm.prenom.$invalid && userForm.prenom.$dirty}">
-                            <label class="control-label col-xs-12 col-sm-3" for="prenom">Prénom</label>
-                            <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="prenom" name="prenom" ng-model="user.firstName" placeholder="Prénom" ng-minlength="3" required />
-                                <span ng-show="userForm.prenom.$dirty" ng-messages="userForm.prenom.$error">
-                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
-                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
-                                </span>
-                            </div>
-                        </div>
                         <div class="form-group col-xs-12" ng-class="{'has-success': userForm.nom.$valid && userForm.nom.$dirty, 'has-error': userForm.nom.$invalid && userForm.nom.$dirty}">
                             <label class="control-label col-xs-12 col-sm-3" for="nom">Nom</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="nom" name="nom" ng-model="user.lastName" placeholder="Nom" ng-minlength="3" required />
+                                <input type="text" class="form-control" id="nom" name="nom" ng-model="user.name" placeholder="Nom" ng-minlength="3" required />
                                 <span ng-show="userForm.nom.$dirty" ng-messages="userForm.nom.$error">
                                     <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
                                     <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
@@ -29,8 +19,18 @@
                         <div class="form-group col-xs-12" ng-class="{'has-success': userForm.email.$valid && userForm.email.$dirty, 'has-error': userForm.email.$invalid && userForm.email.$dirty}">
                             <label class="control-label col-xs-12 col-sm-3" for="email">Email</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="email" name="email" ng-model="user.emailAdress" placeholder="Email" ng-minlength="3" required />
+                                <input type="text" class="form-control" id="email" name="email" ng-model="user.email" placeholder="Email" ng-minlength="3" required />
                                 <span ng-show="userForm.email.$dirty" ng-messages="userForm.email.$error">
+                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
+                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12" ng-class="{'has-success': userForm.password.$valid && userForm.password.$dirty, 'has-error': userForm.password.$invalid && userForm.password.$dirty}">
+                            <label class="control-label col-xs-12 col-sm-3" for="password">Mot de passe</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <input type="text" class="form-control" id="password" name="password" ng-model="user.password" placeholder="Mot de passe" ng-minlength="3" required />
+                                <span ng-show="userForm.password.$dirty" ng-messages="userForm.password.$error">
                                     <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
                                     <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
                                 </span>
