@@ -1,3 +1,3 @@
-# mip
+# Mip
 
-a [Sails](http://sailsjs.org) application
+Application Lifi du musée MIP. (Partie serveur)
