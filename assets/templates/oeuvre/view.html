@@ -1,21 +1,22 @@
 <div class="container">
     <div id="todo-list" class="row">
-        <div class="col-sm-4 col-sm-offset-4">
+        <div>
             <button class="btn btn-lg" ui-sref="oeuvreForm">Ajouter une oeuvre</button>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th class="col-xs-3 col-md-2">Nom</th>
-                        <th class="col-xs-3 col-md-1">Description</th>
-                        <th class="col-xs-4 col-md-3">Epoque</th>
+                        <th class="col-xs-3 col-md-5">Description</th>
+                        <th class="col-xs-4 col-md-3">Image</th>
                         <th class="col-xs-4 col-md-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="oeuvre in oeuvres | filter:search | orderBy:sort:reverse">
-                        <td>{{oeuvre.nom}}</td>
-                        <td>{{oeuvre.description}}</td>
-                        <td>{{oeuvre.epoque}}</td>
+                        <td>{{oeuvre.name}}</td>
+                        <td ng-show="!oeuvre.video">{{oeuvre.description}}</td>
+                        <td ng-show="!oeuvre.video"><img class="img-responsive" ng-src="/images/uploads/{{oeuvre.images[0].url}}"></td>
+                        <td colspan=2 ng-show="oeuvre.video"></td>
                         <td><button class="btn btn-danger" ng-click="removeOeuvre(oeuvre)"><span class="glyphicon glyphicon-trash"></span></button><a class="btn btn-primary" ui-sref="oeuvreForm({id: oeuvre.id})"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     </tr>
                 </tbody>

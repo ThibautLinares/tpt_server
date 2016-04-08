@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mip').controller('UserCtrl', function($rootScope,$scope,UserService){
+angular.module('mip').controller('UserCtrl',['$rootScope','$scope','UserService', function($rootScope,$scope,UserService){
 
   $scope.reload_data = function () {
     UserService.getTodos().then(function(response) {
@@ -24,4 +24,4 @@ angular.module('mip').controller('UserCtrl', function($rootScope,$scope,UserServ
     });
   }
 
-});
+}]);

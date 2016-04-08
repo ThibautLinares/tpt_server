@@ -3,47 +3,274 @@
         <h1 align="center">Oeuvre</h1>
         <br>
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 text-center">
-                <form name="oeuvreForm">
+            <div class="col-sm-12">
+                <form name="oeuvreForm" enctype="multipart/form-data">
                     <div class="form-group">
 
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.type.$valid && oeuvreForm.type.$dirty, 'has-error': oeuvreForm.type.$invalid && oeuvreForm.type.$dirty}" ng-init="type='image'" ng-show="!update">
+                                <label class="control-label" for="typeImage">Image</label>
+                                <input id="typeImage" ng-model="type" type='radio' value="image" checked>
+                                <label class="control-label" for="typeVideo">Vidéo</label>
+                                <input id="typeVideo" ng-model="type" type='radio' value="video">
+                        </div>
                         <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.nom.$valid && oeuvreForm.nom.$dirty, 'has-error': oeuvreForm.nom.$invalid && oeuvreForm.nom.$dirty}">
                             <label class="control-label col-xs-12 col-sm-3" for="nom">Nom</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="nom" name="nom" ng-model="oeuvre.nom" placeholder="Nom" ng-minlength="3" required />
+                                <input type="text" class="form-control" id="nom" name="nom" ng-model="oeuvre.name" placeholder="Nom" ng-minlength="3" required />
                                 <span ng-show="oeuvreForm.nom.$dirty" ng-messages="oeuvreForm.nom.$error">
                                     <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
                                     <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.description.$valid && oeuvreForm.description.$dirty, 'has-error': oeuvreForm.description.$invalid && oeuvreForm.description.$dirty}">
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.description.$valid && oeuvreForm.description.$dirty, 'has-error': oeuvreForm.description.$invalid && oeuvreForm.description.$dirty}" ng-show="type == 'image'">
                             <label class="control-label col-xs-12 col-sm-3" for="description">Description</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="description" name="description" ng-model="oeuvre.description" placeholder="Description" ng-minlength="3" required />
-                                <span ng-show="oeuvreForm.description.$dirty" ng-messages="oeuvreForm.description.$error">
-                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
-                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
-                                </span>
+                                <textarea class="form-control" rows="10" id="description" name="description" ng-model="oeuvre.description" placeholder="Description"/></textarea>
                             </div>
                         </div>
-                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.epoque.$valid && oeuvreForm.epoque.$dirty, 'has-error': oeuvreForm.epoque.$invalid && oeuvreForm.epoque.$dirty}">
-                            <label class="control-label col-xs-12 col-sm-3" for="epoque">Epoque</label>
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.images.$valid && oeuvreForm.images.$dirty, 'has-error': oeuvreForm.images.$invalid && oeuvreForm.images.$dirty}" ng-show="type == 'image'">
+                            <label class="control-label col-xs-12 col-sm-3" for="images">Image</label>
                             <div class="col-xs-12 col-sm-9">
-                                <input type="text" class="form-control" id="epoque" name="epoque" ng-model="oeuvre.epoque" placeholder="Epoque" ng-minlength="3" required />
-                                <span ng-show="oeuvreForm.epoque.$dirty" ng-messages="oeuvreForm.epoque.$error">
-                                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
-                                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
+                                <img class="img-responsive" ng-show="oeuvre.images[0].url" ng-src="/images/uploads/{{oeuvre.images[0].url}}">
+
+                                <span ng-show="oeuvre.images[0].url">
+                                    Changer d'image ?
+                                    <a class="btn btn-primary" ng-show="!isUpdateImage" ng-click="updateImage()">
+                                    <span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a class="btn btn-primary" ng-show="isUpdateImage" ng-click="updateImage()">
+                                    <span class="glyphicon glyphicon-remove"></span></a>
                                 </span>
+                                <input id="images" ng-show="!oeuvre.images[0].url || isUpdateImage" type='file' placeholder="Sélectionner image" accept="image/*" file-model="imageModel" multiple>
                             </div>
                         </div>
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.video.$valid && oeuvreForm.video.$dirty, 'has-error': oeuvreForm.video.$invalid && oeuvreForm.video.$dirty}" ng-show="type == 'video'">
+                            <label class="control-label col-xs-12 col-sm-3" for="video">Vidéo</label>
+                            <div class="col-xs-12 col-sm-9">
+                                    <videogular vg-theme="video.theme" ng-show="oeuvre.video.url">
+                                        <vg-media vg-src="video.sources">
+                                        </vg-media>
+                             
+                                        <vg-controls>
+                                            <vg-play-pause-button></vg-play-pause-button>
+                                            <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                                            <vg-scrub-bar>
+                                                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                                            </vg-scrub-bar>
+                                            <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+                                            <vg-volume>
+                                                <vg-mute-button></vg-mute-button>
+                                                <vg-volume-bar></vg-volume-bar>
+                                            </vg-volume>
+                                            <vg-fullscreen-button></vg-fullscreen-button>
+                                        </vg-controls>
+                             
+                                        <vg-overlay-play></vg-overlay-play>
+                                    </videogular>
+                                <span ng-show="oeuvre.video.url">
+                                    Changer de vidéo ?
+                                    <a class="btn btn-primary" ng-show="!isUpdateVideo" ng-click="updateVideo()">
+                                    <span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a class="btn btn-primary" ng-show="isUpdateVideo" ng-click="updateVideo()">
+                                    <span class="glyphicon glyphicon-remove"></span></a>
+                                </span>
+                                <input id="video" ng-show="!oeuvre.video.url || isUpdateVideo"  type='file' placeholder="Sélectionner vidéo" file-model="videoModel">
+                                <i>Format mp4 seulement.</i>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.audio.$valid && oeuvreForm.audio.$dirty, 'has-error': oeuvreForm.audio.$invalid && oeuvreForm.audio.$dirty}" ng-show="type == 'image'">
+                            <label class="control-label col-xs-12 col-sm-3" for="video">Audio</label>
+                            <div class="col-xs-12 col-sm-9">
+                                    <videogular vg-theme="audio.theme" ng-show="oeuvre.audio.url" class="videogular-container audio">
+                                        <vg-media vg-src="audio.sources" vg-type="audio">
+                                        </vg-media>
+                             
+                                        <vg-controls>
+                                            <vg-play-pause-button></vg-play-pause-button>
+                                            <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+                                            <vg-scrub-bar>
+                                                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                                            </vg-scrub-bar>
+                                            <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+                                            <vg-volume>
+                                                <vg-mute-button></vg-mute-button>
+                                                <vg-volume-bar></vg-volume-bar>
+                                            </vg-volume>
+                                        </vg-controls>
+                                    </videogular>
+                                <span ng-show="oeuvre.audio.url">
+                                    Changer d'audio ?
+                                    <a class="btn btn-primary" ng-show="!isUpdateAudio" ng-click="updateAudio()">
+                                    <span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a class="btn btn-primary" ng-show="isUpdateAudio" ng-click="updateAudio()">
+                                    <span class="glyphicon glyphicon-remove"></span></a>
+                                </span>
+                                <input id="audio" ng-show="!oeuvre.audio.url || isUpdateAudio"  type='file' placeholder="Sélectionner un audio" file-model="audioModel">
+                                <i>Format mp3 seulement.</i>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.lifi.$valid && oeuvreForm.lifi.$dirty, 'has-error': oeuvreForm.lifi.$invalid && oeuvreForm.lifi.$dirty}">
+                            <label class="control-label col-xs-12 col-sm-3">Lifi</label>
+                            <div class="col-xs-11 col-sm-8" ng-show="lifis.length > 0">
+                                <select class="form-control" ng-model="oeuvre.lifi" >
+                                    <option ng-selected="{{oeuvre.lifi == ''}}" value="">-- Aucun --</option>
+                                    <option ng-repeat="lifi in lifis" value="{{lifi.lampeid}}" ng-selected="{{oeuvre.lifi == lifi.lampeid}}" ng-disabled="lifi.used" >{{lifi.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-1 col-sm-1" ng-show="lifis.length > 0">
+                                <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#lifi">
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-9" ng-show="lifis.length == 0">
+                                Pas encore de lampe enregistrée.
+                                <span class="glyphicon glyphicon-plus" ng-click="goToAddLifi()" data-toggle="modal" data-target="#lifi">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group col-xs-12" ng-class="{'has-success': oeuvreForm.diffuser.$valid && oeuvreForm.diffuser.$dirty, 'has-error': oeuvreForm.diffuser.$invalid && oeuvreForm.diffuser.$dirty}">
+                            <label class="control-label col-xs-12 col-sm-3">Diffuseur</label>
+                            <div class="col-xs-11 col-sm-8" ng-show="diffusers.length > 0">
+                                <select class="form-control" ng-model="oeuvre.diffuser">
+                                    <option ng-selected="{{oeuvre.diffuser == ''}}" value="">-- Aucun --</option>
+                                    <option ng-repeat="diffuser in diffusers" ng-selected="{{oeuvre.diffuser == diffuser.url}}" value="{{diffuser.url}}" ng-disabled="diffuser.used" >{{diffuser.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-1 col-sm-1" ng-show="diffusers.length > 0">
+                                <span class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#diffuser">
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-9" ng-show="diffusers.length == 0">
+                                Pas encore de diffuseur enregistré.
+                                <span class="glyphicon glyphicon-plus" ng-click="goToAddDiffuser()" data-toggle="modal" data-target="#diffuser">
+                                </span>
+                            </div>
+
+                        </div>
+
                         <div class="col-xs-12 col-sm-offset-3 col-sm-9"> 
-                        <a class="btn btn-primary btn-lg" ng-show="!update" ng-click="addOeuvre()">Ajouter</a>
-                        <a class="btn btn-primary btn-lg" ng-show="update" ng-click="updateOeuvre()">Editer</a>
+                            <a class="btn btn-primary btn-lg" ng-show="!update" ng-disabled="oeuvreForm.$invalid" ng-click="addOeuvre()">Ajouter</a>
+                            <a class="btn btn-primary btn-lg" ng-show="update" ng-disabled="oeuvreForm.$invalid" ng-click="updateOeuvre()">Editer</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="lifi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Lifi</h4>
+      </div>
+      <div class="modal-body">
+        <form name="lifiForm" ng-show="editLifi || lifis.length == 0 || addLifi">
+            <span class="glyphicon glyphicon-arrow-left" ng-click="goBackLifi()" ng-show="lifis.length > 0">
+            </span>
+            <div class="form-group">
+            <label for="nom">Nom</label>
+                <input type="text" class="form-control" id="nom" name="nom" ng-model="lifi.name" placeholder="Nom" ng-minlength="3" required />
+                <span ng-show="lifiForm.nom.$dirty" ng-messages="lifiForm.nom.$error">
+                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
+                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
+                </span>
+            </div>
+            <div class="form-group">
+            <label for="lampeid">Id de la lampe</label>
+                <input type="text" class="form-control" id="lampeid" name="lampeid" ng-model="lifi.lampeid" placeholder="Identifiant de la lampe" ng-minlength="3" required />
+                <span ng-show="lifiForm.lampeid.$dirty" ng-messages="lifiForm.lampeid.$error">
+                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
+                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
+                </span>
+            </div>
+        </form>
+        <table class="table" ng-show="!editLifi && lifis.length > 0 && !addLifi">
+            <thead>
+                <tr>
+                    <th class="col-xs-3 col-md-4">Nom</th>
+                    <th class="col-xs-3 col-md-5">Id lampe</th>
+                    <th class="col-xs-4 col-md-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="lifi in lifis | filter:search | orderBy:sort:reverse" ng-class="{danger: lifi.used == true}">
+                    <td>{{lifi.name}}</td>
+                    <td>{{lifi.lampeid}}</td>
+                    <td><button class="btn btn-danger" ng-click="removeLifi(lifi)"><span class="glyphicon glyphicon-trash"></span></button><a class="btn btn-primary" ng-click="goToEditLifi(lifi)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <span class="glyphicon glyphicon-plus" ng-click="goToAddLifi()" ng-show="!editLifi && lifis.length > 0 && !addLifi">
+        </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" ng-show="addLifi" ng-click="addNewLifi()">Ajouter</button>
+        <button type="button" class="btn btn-primary" ng-show="editLifi" ng-click="updateLifi()">Editer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="diffuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Diffuseur</h4>
+      </div>
+      <div class="modal-body">
+        <form name="diffuserForm" ng-show="editDiffuser || diffusers.length == 0 || addDiffuser">
+            <span class="glyphicon glyphicon-arrow-left" ng-click="goBackDiffuser()" ng-show="diffusers.length > 0">
+            </span>
+            <div class="form-group">
+            <label for="nom">Nom</label>
+                <input type="text" class="form-control" id="nom" name="nom" ng-model="diffuser.name" placeholder="Nom" ng-minlength="3" required />
+                <span ng-show="diffuserForm.nom.$dirty" ng-messages="diffuserForm.nom.$error">
+                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
+                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
+                </span>
+            </div>
+            <div class="form-group">
+            <label for="url">URL du diffuseur</label>
+                <input type="text" class="form-control" id="url" name="url" ng-model="diffuser.url" placeholder="Identifiant de la lampe" ng-minlength="3" required />
+                <span ng-show="diffuserForm.url.$dirty" ng-messages="diffuserForm.url.$error">
+                    <span class="help-block" ng-message="required">Ce champ est obligatoire</span>
+                    <span class="help-block" ng-message="minlength">Ce champ doit contenir au moins 3 caractères</span>
+                </span>
+            </div>
+        </form>
+        <table class="table" ng-show="!editDiffuser && diffusers.length > 0 && !addDiffuser">
+            <thead>
+                <tr>
+                    <th class="col-xs-3 col-md-4">Nom</th>
+                    <th class="col-xs-3 col-md-5">URL</th>
+                    <th class="col-xs-4 col-md-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="diffuser in diffusers | filter:search | orderBy:sort:reverse" ng-class="{danger: diffuser.used == true}">
+                    <td>{{diffuser.name}}</td>
+                    <td>{{diffuser.url}}</td>
+                    <td><button class="btn btn-danger" ng-click="removeDiffuser(diffuser)"><span class="glyphicon glyphicon-trash"></span></button><a class="btn btn-primary" ng-click="goToEditDiffuser(diffuser)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <span class="glyphicon glyphicon-plus" ng-click="goToAddDiffuser()" ng-show="!editDiffuser && diffusers.length > 0 && !addDiffuser">
+        </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" ng-show="addDiffuser" ng-click="addNewDiffuser()">Ajouter</button>
+        <button type="button" class="btn btn-primary" ng-show="editDiffuser" ng-click="updateDiffuser()">Editer</button>
+      </div>
+    </div>
+  </div>
 </div>

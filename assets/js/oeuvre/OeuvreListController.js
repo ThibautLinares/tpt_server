@@ -1,10 +1,16 @@
 'use strict';
 
-angular.module('mip').controller('OeuvreListCtrl', function($rootScope,$scope,OeuvreService,$state){
+angular.module('mip').controller('OeuvreListCtrl', ['$rootScope','$scope','OeuvreService','$state', function($rootScope,$scope,OeuvreService,$state){
 
-  if($scope.isAuthenticated == false) {
-    $state.go('home');
-  }
+  
+  
+  $scope.userIsAuthenticated(function(){
+
+    if($scope.isAuthenticated == false) {
+      $state.go('home');
+    }
+    
+  });
 
   $scope.reload_data = function () {
     OeuvreService.getOeuvres().then(function(response) {
@@ -20,4 +26,4 @@ angular.module('mip').controller('OeuvreListCtrl', function($rootScope,$scope,Oe
     });
   }
 
-});
+}]);

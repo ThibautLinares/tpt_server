@@ -40,7 +40,14 @@ var jsFilesToInject = [
   '/bower_components/jquery-ui/jquery-ui.js',
   '/bower_components/moment/moment.js',
   '/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-  '/bower_components/bootstrap/dist/js/boostrap.js',
+  '/bower_components/bootstrap/dist/js/bootstrap.js',
+  '/bower_components/angular-sanitize/angular-sanitize.js',
+  '/bower_components/videogular/videogular.js',
+  '/bower_components/videogular-controls/vg-controls.js',
+  '/bower_components/videogular-overlay-play/vg-overlay-play.js',
+  '/bower_components/videogular-poster/vg-poster.js',
+  '/bower_components/videogular-buffering/vg-buffering.js',
+  '/bower_components/videogular/videogular.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

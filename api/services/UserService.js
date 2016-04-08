@@ -12,7 +12,7 @@ module.exports = {
     });
   },
   removeTodo: function(todoVal, next) {
-    User.destroy(todoVal).exec(function(err, todo) {
+    User.destroy(todoVal.id).exec(function(err, todo) {
       if(err) throw err;
       next(todo);
     });

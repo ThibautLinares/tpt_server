@@ -1,4 +1,4 @@
-angular.module('mip').service('UserService', function($http, $q) {
+angular.module('mip').service('UserService',['$http', '$q', function($http, $q) {
   return {
     'getTodos': function() {
       var defer = $q.defer();
@@ -27,4 +27,4 @@ angular.module('mip').service('UserService', function($http, $q) {
       });
       return defer.promise;
     }
-}});
+}}]);

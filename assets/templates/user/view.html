@@ -46,15 +46,22 @@
     </div>
     <div id="todo-list" class="row">
         <div class="col-sm-4 col-sm-offset-4">
-            <div class="checkbox" ng-repeat="todo in todos">
-                <label>
-                    <input type="checkbox" ng-click="removeTodo(todo)">
-                    {{ todo.id }}
-                    {{ todo.firstName }}
-                    {{ todo.lastName }}
-                    {{ todo.emailAdress }}
-                </label>
-            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-xs-3 col-md-4">Nom</th>
+                        <th class="col-xs-3 col-md-6">Mail</th>
+                        <th class="col-xs-4 col-md-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  ng-repeat="todo in todos">
+                        <td>{{todo.name}}</td>
+                        <td>{{todo.email}}</td>
+                        <td><button class="btn btn-danger" ng-click="removeTodo(todo)"><span class="glyphicon glyphicon-trash"></span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
